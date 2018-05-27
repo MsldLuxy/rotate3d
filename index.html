@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="不会爬树的鱼">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>Title</title>
+    <style>
+        body,div,ul,li,ol,p,span,h1,h2,h3,h4,h5,h6,a,img,table,form{margin:0;padding:0;}
+        body{font:16px/1.5 "Microsoft Yahei" ;}
+        ul{list-style:none;}
+        a{text-decoration:none;}
+        .clearfix:after{content:''; display:block; clear:both;}
+        html,body{
+            width:100%;
+            height:100%;
+            display: flex;
+            background:#000;
+            perspective:800px;
+            overflow:hidden;
+        }
+        #box{
+            position: relative;
+            width: 133px;
+            height: 200px;
+            /*border:1px solid yellow;*/
+            margin:auto;
+            /*perspective:800px;*/
+            transform-style:preserve-3d;
+            transform:rotateX(-30deg) rotateY(0deg);
+
+        }
+        #box img{
+            position:absolute;
+            top:0;
+            left: 0;
+        }
+        #box p{
+            position: absolute;
+            top:50%;
+            left: 50%;
+            margin-top:-400px;
+            margin-left:-400px;
+            width: 800px;
+            height: 800px;
+            border-radius: 50%;
+            background:-webkit-radial-gradient(
+                    center center,
+                    600px 600px,
+                    rgba(50,50,50,1),
+                    rgba(0,0,0,0)
+            );
+
+            transform:rotateX(90deg) translateZ(-100px);
+
+        }
+        /*#box img:nth-child(1){*/
+            /*transform:rotateY(36deg) translateZ(300px);*/
+        /*}*/
+        /*#box img:nth-child(2){*/
+            /*transform:rotateY(72deg) translateZ(300px);*/
+        /*}*/
+        /*#box img:nth-child(3){*/
+            /*transform:rotateY(108deg) translateZ(300px);*/
+        /*}*/
+        /*#box img:nth-child(4){*/
+            /*transform:rotateY(144deg) translateZ(300px);*/
+        /*}*/
+        /*#box img:nth-child(5){*/
+            /*transform:rotateY(180deg) translateZ(300px);*/
+        /*}*/
+        /*#box img:nth-child(6){*/
+            /*transform:rotateY(216deg) translateZ(300px);*/
+        /*}*/
+        /*#box img:nth-child(7){*/
+            /*transform:rotateY(252deg) translateZ(300px);*/
+        /*}*/
+        /*#box img:nth-child(8){*/
+            /*transform:rotateY(288deg) translateZ(300px);*/
+        /*}*/
+        /*#box img:nth-child(9){*/
+            /*transform:rotateY(324deg) translateZ(300px);*/
+        /*}*/
+        /*#box img:nth-child(10){*/
+             /*transform:rotateY(360deg) translateZ(300px);*/
+        /*}*/
+
+
+    </style>
+ </head>
+ <body>
+    <div id="box">
+        <img src="img/1.jpg" alt="">
+        <img src="img/2.jpg" alt="">
+        <img src="img/3.jpg" alt="">
+        <img src="img/4.jpg" alt="">
+        <img src="img/5.jpg" alt="">
+        <img src="img/6.jpg" alt="">
+        <img src="img/7.jpg" alt="">
+        <img src="img/8.jpg" alt="">
+        <img src="img/9.jpg" alt="">
+        <img src="img/10.jpg" alt="">
+        <p></p>
+    </div>
+    <script>
+        var oBox = document.getElementById("box"),
+            oImg = document.getElementsByTagName("img");
+
+       window.onload = function () {
+           for(var i=0; i<oImg.length; i++){
+               oImg[i].style.transform = 'rotateY('+36*i+'deg) translateZ(300px)';
+               oImg[i].style.transition = 'transform 1s '+(oImg.length - i)*0.1+'s';
+           }
+
+           var nowX,
+               nowY,
+               lastX,
+               lastY,
+               desX,
+               desY,
+               degX = -30,
+               degY = 0,
+               timer;
+
+           document.onmousedown = function (e) {
+               clearInterval(timer);
+               e = e || window.event;
+               //获取点击鼠标时的x和y值
+               lastX = e.clientX;
+               lastY = e.clientY;
+
+               this.onmousemove = function (e) {
+                   //获取当前的x和y值
+                   nowX = e.clientX;
+                   nowY = e.clientY;
+
+                   //获取x和y的差值
+                   desX = nowX - lastX;
+                   desY = nowY - lastY;
+
+                   //旋转角度
+                   //x值的改变是旋转Y轴，反之亦然
+                   degX -= desY * 0.1;
+                   degY += desX * 0.1;
+
+                   oBox.style.transform = 'rotateX('+degX+'deg) rotateY('+degY+'deg)';
+                   //当前的xy就会变成之前的xy
+                   lastX = nowX;
+                   lastY = nowY;
+
+               }
+
+               this.onmouseup = function () {
+                   this.onmousemove = this.onmouseup = null;
+                   timer = setInterval(function () {
+//                       console.log(desX);
+//                       console.log(desY);
+                       desX *= 0.95;
+                       desY *= 0.95;
+                       degX -= desY * 0.1;
+                       degY += desX * 0.1;
+                       oBox.style.transform = 'rotateX('+degX+'deg) rotateY('+degY+'deg)';
+
+                       if(Math.abs(desX) < 0.5 && Math.abs(desY) < 0.5){
+                           clearInterval(timer);
+                       }
+                   },13);
+               }
+               return false;
+           }
+       }
+    </script>
+ </body>
+</html>
